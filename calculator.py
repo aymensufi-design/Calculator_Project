@@ -1,32 +1,47 @@
+# calculator.py
 import streamlit as st
+import math
 
-# Title of the App
-st.title("Simple Calculator 🧮")
+# Memory variable
+memory = 0
 
-# Taking user input
-num1 = st.number_input("Enter first number:", step=1.0)
-num2 = st.number_input("Enter second number:", step=1.0)
+st.title("Advanced Calculator")
 
-# Operation selection
-operation = st.selectbox("Choose operation:", ["Addition", "Subtraction", "Multiplication", "Division"])
+# User inputs
+num1 = st.number_input("Enter first number", value=0.0)
+num2 = st.number_input("Enter second number", value=0.0)
+operation = st.selectbox("Choose Operation", 
+                         ["Addition", "Subtraction", "Multiplication", "Division", 
+                          "Power", "Square Root", "Percentage", "Memory Recall", "Clear Memory"])
 
 # Button to calculate
 if st.button("Calculate"):
+    result = None
     if operation == "Addition":
         result = num1 + num2
-        st.write(f"Result: {num1} + {num2} = {result}")
-
     elif operation == "Subtraction":
         result = num1 - num2
-        st.write(f"Result: {num1} - {num2} = {result}")
-
     elif operation == "Multiplication":
         result = num1 * num2
-        st.write(f"Result: {num1} × {num2} = {result}")
-
     elif operation == "Division":
         if num2 != 0:
             result = num1 / num2
-            st.write(f"Result: {num1} ÷ {num2} = {result}")
         else:
-            st.error("Error ❌: Division by zero is not allowed!")
+            result = "Error: Division by zero!"
+    elif operation == "Power":
+        result = num1 ** num2
+    elif operation == "Square Root":
+        result = math.sqrt(num1)
+    elif operation == "Percentage":
+        result = (num1 * num2) / 100
+    elif operation == "Memory Recall":
+        result = memory
+    elif operation == "Clear Memory":
+        memory = 0
+        result = "Memory Cleared!"
+
+    # Store result in memory if not Memory Recall/Clear Memory
+    if operation not in ["Memory Recall", "Clear Memory"]:
+        memory = result
+
+    st.write("Result:", result)
